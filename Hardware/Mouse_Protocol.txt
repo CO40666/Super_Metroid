@@ -1,0 +1,46 @@
+Mouse Protocol
+
+The snes mouse uses the same timing and protocol as a regular pad for it's buttons. The left button is reported at the 9th cycle, and the right button at the 10th cycle. The snes recognizes the mouse when the bit at the 16th clock cycle is low instead of high. 2.5ms after the 16 clock pulses, another series of clock pulses occurs. This is in fact cycles 17 to 32 since no new latch pulse had occurred yet. The data is active low, just like the buttons. This time, the clock timing is different:
+
+                      8us
+                   -->|     |<--
+                    .5us
+                 -->| |<--
+data clock  --------   -----   -----   --/ /-  ...
+                    | |     | |     | |     | |
+                     -       -       -       -
+                     17      18      19      32
+
+Here is the meaning of the mouse specific cycles:
+
+Clock Cycle     Button Reported
+===========     ===============
+17              Y direction (0=up, 1=down)
+18              Y motion bit 6
+19              Y motion bit 5
+20              Y motion bit 4
+21              Y motion bit 3
+22              Y motion bit 2
+23              Y motion bit 1
+24              Y motion bit 0
+25              X direction (0=left, 1=right)
+26              X motion bit 6
+27              X motion bit 5
+28              X motion bit 4
+29              X motion bit 3
+30              X motion bit 2
+31              X motion bit 1
+32              X motion bit 0
+
+Each time the SNES polls the mouse, the mouse reports how it moved since last poll. When no movement occured since last poll, all the motion bits stays high (which means binary 0). The direction bits keep their last state.
+Mouse Sensitivity
+
+The mouse has 3 configurable sensitivity levels. The currently active sensitivity level is reported by bits 11 and 12:
+
+    Bit 11 low, Bit 12 high: High sensitivity
+    Bit 11 high, Bit 12 low: Medium sensitivity
+    Bit 11 high, Bit 12 high: Low sensitivity
+
+Selecting the Sensitivity Mode
+
+A special sequence is used to rotate between the 3 modes. First, a normal 12us latch pulse is applied. Next, the first 16 bits are read using normal button timings. Shortly after (about 1ms), 31 short latch pulses (3.4uS) are sent, with the clock going low for 700ns during each latch pulse. For selecting a specific sensitivity, simply execute the special sequence until bits 11 and 12 are as desired.

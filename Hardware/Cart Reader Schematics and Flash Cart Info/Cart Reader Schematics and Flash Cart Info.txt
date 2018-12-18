@@ -1,0 +1,23 @@
+Cart Reader Schematics and Flash Cart Info
+
+https://www.caitsith2.com/snes/flashcart/cart-chip-pinouts.html
+
+
+1.Cartridge_edge_connectors.txt
+2.ROM_pins.txt
+3.DSP_pins.txt
+4.MAD-1_pins.txt
+5.CIC_-_SecurityChip_pins.txt
+6.SRAM_pins.txt
+
+
+Note:
+I've done my best to cross-check my results with other people, and to re-check this information. The following information is solely from other documentation and has not been checked: the outer tabs of the cartridge edge connector (pads 01-04, 28-31, 32-35, 59-62), also pad 18, and the labels of the CIC pins (CIC in data, CIC in clock, CIC out data).
+
+If you find more information, or find an error, let me know,
+-neviksti
+
+
+
+https://www.caitsith2.com/
+d...@caitsith2.com

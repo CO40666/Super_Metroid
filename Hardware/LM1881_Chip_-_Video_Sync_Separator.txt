@@ -1,0 +1,19 @@
+LM1881 Chip - Video Sync Separator
+
+Most game systems output the composite sync information along with the NTSC video output. Many RGB displays will not accept this extraneous info along with the sync, so we need to remove the video signal. The LM1881 / LM1881N does just this. It's a simple circuit - one small chip, two small capacitors and a small resistor. Download LM1881N_Datasheet.pdf.
+
+----\/----
+| 1    8 |
+| 2    7 |
+| 3    6 |
+| 4    5 |
+----------
+
+1: Composite Sync Output
+2: Composite Video Input
+3: Vertical Sync Output
+4: Ground (?)
+5: Burst / Back Porch Output
+6: R-Set
+7: Odd / Even Output
+8: VCC 5-12V

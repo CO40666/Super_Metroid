@@ -1,0 +1,23 @@
+Pass 0: 380 Lines, 0 Errors, 0 Labels
+Pass 1ERROR in line 161: Operand out of range #picData1+$800&$FFFF
+ERROR in line 175: Operand out of range #picData1+$820&$FFFF
+ERROR in line 203: Operand out of range #picData2+$800&$FFFF
+ERROR in line 217: Operand out of range #picData2+$820&$FFFF
+ERROR in line 356: Duplicate label incbin
+ERROR in line 362: Duplicate label incbin
+ERROR in line 380: Duplicate label incbin
+: 380 Lines, 7 Errors, 21 Labels
+Pass 2ERROR in line 139: Undefined label in PICDATA1&65535
+ERROR in line 161: Operand out of range #picData1+$800&$FFFF
+ERROR in line 175: Operand out of range #picData1+$820&$FFFF
+ERROR in line 189: Undefined label in PICDATA2&65535
+ERROR in line 203: Operand out of range #picData2+$800&$FFFF
+ERROR in line 205: Operand out of range #picData2+$800/$10000
+ERROR in line 217: Operand out of range #picData2+$820&$FFFF
+ERROR in line 219: Operand out of range #picData2+$820/$10000
+ERROR in line 239: Undefined label in P1XSCROLLS&65535
+ERROR in line 356: Duplicate label incbin
+ERROR in line 362: Duplicate label incbin
+ERROR in line 380: Duplicate label incbin
+: 380 Lines, 12 Errors, 21 Labels
+008000-018000

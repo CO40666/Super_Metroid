@@ -1,0 +1,3 @@
+Power
+
+This one is simple. It's a hollow cylindrical plug. It expects to be supplied with DC 10V, 850mA AC power source. The DC jack can be fed with centre-positive or centre-negative as there is a AC-DC converter inside.

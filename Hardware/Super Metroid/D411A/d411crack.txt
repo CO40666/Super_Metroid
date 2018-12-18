@@ -1,0 +1,444 @@
+"readme.txt":
+
+'"d411crack" freeBASIC SNES CIC lock-out chip rom decoding test program 0x004
+'Created September 23rd-25th 2009 by Timothy Robert Keal alias jargon
+'Released under the Gnu Public License 2.0
+'
+'http://retromachineshop.com/
+'irc://chat.freenode.net/puzzlum
+'
+'Please review the Gnu Public License, Thank you. 
+'The GPL can be located online at http://www.gnu.org/copyleft/gpl.html
+
+File Info:
+  D411_ROM.txt
+    This file is a dump of the D114 SNES CIC lock-out chip ROM.
+  d411crack.exe
+    This file converts the dump between CIC key/lock.
+  d411crack.nas
+    This file is the freeBASIC plain/text source code for "d411crack.exe".
+  license.txt
+    This file contains the Gnu Public License 2.0 information.
+  url.txt
+    This file contains the URL to the online location where the dump was
+    obtained.
+  D411_ROM.raw.txt
+    This file contains the dump with whitespace and linebreaks omitted.
+  D411_ROM.raw.dump.txt
+    This file is the dumped result of passing the d411_ROM.raw.txt 4096bit
+    ROM's initial starting data to d411crack.exe.
+  readme.txt
+    The file containing the documenation you are currently reading.
+
+How to Use:
+  Drag drop the plain/text file of the ascii "1"s and "0"s per bit dump of
+  the ROM from the "D411" SNES CIC lock-out chip onto the Windows icon of
+  d411crack.exe. It will then create a new file with the filename same as
+  the drag-dropped file except with ".txt" appended to the end of a filename.
+  If the file to be created already exists, the program will erase then
+  overwrite.
+
+How to compile:
+  1. Download freeBASIC from: http://sourceforge.net/projects/fbc/
+  2. Install freeBASIC.
+  3. Double click d411crack.bas in Windows.
+  4. In the freeBASIC menu system:
+     Change the "View" -> "Settings" -> "FreeBASIC" -> "Compiler Command" to:
+     "<$fbc>" "<$file>" -s gui -mt
+  5. In the freeBASIC menu system:
+     Use "Run" -> "Compile"
+  6. It should now be compiled.
+
+Source Code Documentation:
+  main program
+    The main program simply converts the provided ROM.
+    1. Program loads WROM from command line input as massive string variable
+       of only the "0" and "1" ascii characters.
+    2. Program converts characters into a 32bit integer array.
+    3. Main loop begins.
+    4. If "Esc" key is hit, program exits.
+    5. Program cycles thru amount of bits in WROM in 4 overlapping clock
+       alignment skews.
+    6. Program renders WROM bits to display.
+    7. Program echos current "Addressing BSWAP" bit in WROM from looped
+       addresses of all bits in WROM along with hexidecimal index of currnet
+       bit in dump file.
+    8. Program writes ascii char either "0" or "1" to file having filename of
+       the command line argument filename with ".dump.txt" appended to the
+       filename.
+    9. Program "Addressing BSWAP" shuffles the bits in WROM.
+   10. loop repeats.
+  function bswap(value as byte) as byte
+    This function is a bitwise bswap.
+    1. Takes a byte as input and return the value with the order of bits
+        flipped.
+  function bswap12(value as integer) as integer
+    This function is an addressing bswap.
+    1. This function takes a signed 32bit integer as input.
+    2. It then cycles thru each of the lesser significant 12 bits of input.
+    3. The least significant power bit cycled is 0 while the power of the
+       greatest significant bit cycled is 11.
+    4. Each 4bit value of the power in the cycle is adjusted from a 0 to 11
+       range to a 0 to 15 range.
+    4. The result value is then 4bit bswapped.
+    5. The result value is then converted back from a 0 to 15 range to a
+       0 to 11 range.
+    6. The result value is then subtracted from 11.
+    7. The former result is then the value of what power to move the current
+       power in the loop.
+    8. After cycling thru all 12 bits, the result is returned as a signed
+       32bit integer.
+  function bswap4(value as byte) as byte
+    This function works the similar to bswap12 but takes a byte and returns
+    a byte, and additionally is for 4 bits of input and output.
+  function bswap8(value as byte) as byte
+    This function works the similar to bswap8 but takes a byte and returns
+    a byte, and additionally is for 8 bits of input and output.
+  sub drawrom(px as integer,py as integer,cols as integer,rows as integer)
+    This subroutine renders the current WROM contents to the screen. "px" and
+    "py" are the signed 32bit integer column and row for the upper left of the
+    render. "cols" and "rows" are the signed 32bit integer of the span
+    horizontally and vertically of the render.
+  sub clockstep(first as integer,last as integer,m as integer,c as integer)
+    This function cycles clock ticks in WROM. "first" and "last" are the signed
+    32bit integer of the first and last indiced bit in WROM to cycle the signed
+    32bit integer "c" carry values thru, the signed 32 integer "m" multiples
+    argument tells the span between bits in the clock. The "first" and "last"
+    can be either same bit, or from lower address bit to higher address bit, or
+    from higher address bit to lower address bit.
+  sub bankswap(first as integer,last as integer,flag as integer)
+    This function cycles bits in WROM to be reassigned to and from a pseudo
+    WROM table. The "first" and "last" can be either same bit, or from lower
+    address bit to higher address bit, or from higher address bit to lower
+    address bit.
+Disclaimer:
+  This is 100% unverified. This is just an intuitive wild guess that I pulled
+  out of my ass. This is the oly surefire way to encrypt data without using
+  seeds. (There doesn't seem to be any seeds in the D411 CIC chip.) I have no
+  idea what the bit alignment is (I used zero bit offset per every bit), what
+  the "addressing bswap" bit-depth is (I used 12bit to fit the entire ROM at
+  once.) And I have no idea what direction each bank counts the clock cycles
+  and whether each clock is 128bit for a full bank or not. (I assume there are
+  16x64 16bit clocks in all 4 alignment/endian combinations, with the WROM
+  giving starting values in each bank.) I have no idea if the addressing
+  values are cycled by a clock, nor if the addressing values are mutated
+  further somehow. (I had it count every tick cycle through 1bit thru 1 thru
+  4096 bits, with current offset dumped from WROM being the "Addressing BSWAP"
+  of that offset) Nor do I have any clue at all whether how multiple bits per
+  input/output are used. (I used straight out 1bit stream) ..I am flying by
+  the seat of my ass, and not a damn person seems to be willing to help me
+  learn how to mod a Super Nintendo in-order to sample the D411 SNES CIC
+  lock-out chip input/output/clock traffic myself. (Update: icekiller helped
+  me immensely in-order to set up my own D411 dumping rig.)
+
+
+
+"D411_ROM.txt" (D411 WROM dump):
+
+1111 1011 1111 0011 0001 1011 0011 1011 0001 0111 0101 1011 0001 0101 1110 1110
+0000 0110 1011 0011 1101 0110 1011 1011 1110 1100 1100 0100 1001 0000 1011 1111
+
+1010 1001 1111 1100 0010 1001 0010 0101 0000 1010 0100 1110 0010 1010 1111 1111
+1001 1110 0011 1010 0000 1110 1100 1110 1000 1110 1100 1110 0000 1011 1010 1110
+
+0010 1010 0011 1111 1010 1011 1111 1011 1000 1011 0100 1110 1000 1011 1001 1111
+0111 1111 1111 1011 1111 1111 0111 1111 0011 1111 1001 0110 0111 1011 0011 1111
+
+1001 1110 0110 1110 1100 1111 0110 1111 1100 1110 1101 1110 0000 0110 1110 1111
+0101 1110 1111 1101 0111 1110 0101 1100 0001 1110 0011 1110 0001 1100 1000 1111
+
+1010 0111 0110 0101 0011 0111 1000 0110 1001 1101 1001 0111 0000 0100 1110 0111
+1111 1110 1100 1110 1111 1111 1100 1111 1100 1111 1100 1111 1000 1110 1100 1110
+
+1111 1011 1111 1110 1001 1011 1001 1111 1011 1010 1010 1110 1000 1010 1111 1111
+0100 1111 1110 1101 0010 1110 0011 1100 0110 1111 1101 1111 0000 1100 1110 1111
+
+0101 1111 1101 1110 0000 1111 1011 1111 0111 1111 1110 1111 0000 1110 1111 1111
+0011 1011 1011 1011 0001 1011 0111 1111 0110 1011 1100 1111 0001 1011 1111 1111
+
+1110 1111 1111 1111 1000 1111 1110 1111 1010 1111 1000 1101 1000 1101 1111 1111
+0111 1111 0110 1011 0010 1110 0011 1101 0011 1010 1001 1000 0000 1000 0111 1111
+
+0000 1111 1111 1001 1010 0110 1010 1010 1000 0100 0100 0101 1010 0000 0001 0111
+0011 1111 1111 0111 1111 1011 0111 1011 0110 0111 1110 0111 0010 0011 0110 1111
+
+1100 1111 1110 1111 1110 0111 1111 1111 1111 1111 0110 0111 0101 0111 1111 1111
+0010 1111 0101 1110 1011 1111 1001 1111 1001 1110 0000 0111 1000 1110 1101 1111
+
+1110 1100 1110 1111 1011 1101 1110 1100 1011 1101 1011 1111 1010 1100 1111 1111
+1100 1110 1111 1110 1111 1111 1111 1111 1111 1111 1111 1110 1100 1111 1110 1111
+
+1100 1111 1111 1111 1111 1111 1011 1111 0111 1111 1010 1111 1001 1111 1111 1111
+0011 1111 1110 1110 0011 1111 1110 1110 0010 1011 1000 1010 0010 1110 1010 1111
+
+0110 1101 1111 0111 1100 1100 1101 1101 1100 1110 0101 1111 0100 0100 1111 1111
+0100 1111 0111 1101 0000 1111 1011 1101 0000 0111 1110 1111 0000 0101 0111 0111
+
+1110 1111 1011 1111 1010 1110 1111 1110 1110 1110 1111 1111 1010 1110 1111 1111
+0101 1111 0110 1111 0011 1111 0010 1111 0111 1111 0001 1111 1010 1111 0111 1111
+
+0101 0001 1100 1011 0101 1011 0110 0111 0101 1011 0011 0011 1100 0111 0101 1111
+1111 1111 1101 1111 1100 1111 1100 0111 1101 0111 1101 0111 1100 0111 0101 1111
+
+1010 1111 1111 1111 1000 1111 1000 1111 1000 1111 1100 1111 1001 1111 0110 0111
+1010 1111 1111 1111 1111 1011 1011 1001 1001 1101 1100 1101 1011 1001 1011 1110
+
+1101 1001 1011 1111 1001 1111 1111 1111 0101 1101 0111 0001 0001 0111 1110 1110
+1011 0010 1101 0111 0111 0110 1111 0111 0001 0000 0000 0000 1111 1110 1111 1111
+
+1110 1101 1001 1011 1101 0101 1111 0110 1111 0111 1010 0101 1001 0000 1111 1110
+1011 1010 0100 0101 0010 1111 1011 1111 1011 1111 1011 1010 0000 0000 1011 1110
+
+0010 0111 1111 0011 1110 0110 1101 0000 1100 0000 1000 0100 0110 1010 1111 1011
+0111 0111 1011 1101 1001 0110 1111 1111 1100 1010 0100 0010 1011 0101 1101 1111
+
+1111 1110 1110 1001 0110 1111 1110 0011 0110 1010 1111 0010 0110 0101 0110 1111
+1110 0001 1110 0000 1111 1101 1111 0000 1011 0000 1010 0000 1111 1110 1111 1110
+
+1111 1111 1000 1011 1000 1111 1011 1101 0110 1110 0010 1110 0100 1001 1110 1101
+0010 0111 1111 0001 1011 0110 1011 0110 1010 0110 1010 0110 1111 1000 1111 1111
+
+1111 0111 1011 1000 1011 1111 1111 1011 1110 1011 1110 1110 1011 0000 1111 1011
+0000 0011 1101 1110 1111 1011 1111 1111 1101 0011 1100 0011 0111 1110 0111 1111
+
+1101 0111 1110 1111 1100 0111 1101 0100 0101 0001 0110 0001 1100 1110 1111 1110
+0011 1011 1001 0100 1011 1011 1111 1111 1111 1111 0011 1011 1001 0000 0111 1111
+
+1110 0101 1100 1010 1111 1100 1100 0111 1111 0110 1110 0100 1101 1001 1111 1111
+0011 0010 1101 1101 1101 0110 1111 1110 1110 0110 0010 0010 1001 0100 1011 1111
+
+1000 1110 0100 0110 1110 1011 0111 1011 1111 1001 1010 1000 0100 0010 1111 1111
+1011 1000 1111 1011 0101 1110 0000 0011 0010 1100 0010 1000 0001 0011 1110 0111
+
+0001 1010 1100 0000 1011 1010 1001 0111 0011 1010 0101 0010 1010 0101 1111 1111
+0111 1000 1110 1111 0110 1011 1110 1011 0111 1001 0110 1001 0111 1110 1110 1111
+
+0111 1110 0111 0011 1111 1001 1111 1001 0111 1000 1101 1000 0111 0101 0111 1111
+1101 1111 1111 1101 1101 1010 1101 0010 1101 0010 1100 0010 1101 0100 1111 1111
+
+0001 0111 1001 1100 0111 1011 1111 0011 0000 0011 0100 0011 1101 1100 1011 1111
+1010 0010 1101 1101 1100 1111 1111 1011 1110 0110 1110 0000 1000 1011 1011 1111
+
+0110 1111 0101 1011 0100 1100 1111 1110 1010 1100 0011 1100 1100 1010 1111 1111
+1101 1111 0111 1010 0111 1101 1011 1001 1111 1001 1101 1001 0011 1100 1111 1111
+
+1110 1101 1011 0010 1100 0011 1001 0010 1010 0000 1011 0001 1000 0110 1011 0110
+0011 1110 1011 0001 1111 1011 1011 1110 1011 1010 0111 1010 1111 0101 1011 1111
+
+0111 1101 0111 1000 1000 0111 0101 1011 1000 0011 1000 0111 0110 0010 0111 1001
+1111 1111 1111 1010 1101 1110 0111 0100 0111 0100 0101 0100 0101 0011 1101 1111
+
+1100 1000 1101 1111 1111 1110 1111 1111 1001 1110 1001 1100 1111 1010 0111 0111
+1110 1011 1110 1011 1100 1111 1101 1001 1101 1001 1000 1001 1101 1101 1111 1110
+
+
+
+"d411crack.bas":
+
+'"d411crack" freeBASIC SNES CIC lock-out chip rom decoding test program 0x004
+'Created September 23rd-25th 2009 by Timothy Robert Keal alias jargon
+'Released under the Gnu Public License 2.0
+'
+'http://retromachineshop.com/
+'irc://chat.freenode.net/puzzlum
+'
+'Please review the Gnu Public License, Thank you. 
+'The GPL can be located online at http://www.gnu.org/copyleft/gpl.html
+declare function bswap(value as byte) as byte
+declare function bswap8(value as byte) as byte
+declare function bswap4(value as byte) as byte
+declare function bswap12(value as integer) as integer
+declare sub drawrom(px as integer,py as integer,cols as integer,rows as integer)
+declare sub clockstep(first as integer,last as integer,m as integer,c as integer)
+declare sub bankswap(first as integer,last as integer,flag as integer)
+dim as string cmd=command,buffer=string(0,0),filename="D411_ROM.txt"
+filename=cmd
+dim as integer mode=0,o=0,ct=0
+redim shared as integer dat(0),dat2(0)
+mode=freefile
+open filename for input as #mode
+if (eof(mode)=0) and (lof(mode)>0) then
+    buffer=string(lof(mode),0)
+    get #mode,,buffer
+endif
+close #mode
+o=0
+ct=0
+do
+    if o>=len(buffer) then
+        exit do
+    endif
+    if mid(buffer,o+1,1)="1" or mid(buffer,o+1,1)="0" then
+        ct=ct+1
+    endif
+    o=o+1
+loop    
+redim dat(0 to ct-1),dat2(0 to ct-1)
+o=0
+do
+    if o>=ct or o>=len(buffer) then
+        exit do
+    endif
+    if mid(buffer,o+1,1)="1" or mid(buffer,o+1,1)="0" then
+        dat(o)=val(mid(buffer,o+1,1))
+    endif
+    o=o+1
+loop    
+dim as integer o2=0, addr=0
+dim as string ret=string(0,0)
+screenres 640,480,32,16,,120
+screenset 1,0
+o=0
+dim as integer x=0,y=0,o3=0,offset=0
+dim as string d=string(1,0)
+mode=freefile
+open filename+".dump.txt" for output as #mode
+close #mode
+mode=freefile
+open filename+".dump.txt" for binary as #mode
+do
+    if inkey=chr(27) then
+        exit do
+    endif
+    for o2=0 to &hfff step 16
+        clockstep o2,o2+15,1,1
+    next
+    for o2=0 to &hfff step 16
+        clockstep 0,&hfff,16,1
+    next
+    for o2=0 to &hfff step -16
+        clockstep o2+15,o2,1,1
+    next
+    for o2=0 to &hfff step -16
+        clockstep &hfff,0,16,1
+    next
+    bankswap 0,&hfff,0
+    bankswap 0,&hfff,1
+    line(0,0)-(639,479),0,bf
+    drawrom 0,0,64,64
+    o3=bswap12(o)
+    x=o3 and 63
+    y=fix(o3/64)
+    line((x shl 2)-1,(y shl 2)-1)-((x+1) shl 2,(y+1) shl 2),rgb(255,0,0),b
+    line((x shl 2)-2,(y shl 2)-2)-(((x+1) shl 2)+1,((y+1) shl 2)+1),rgb(255,0,0),b
+    line((x shl 2)-3,(y shl 2)-3)-(((x+1) shl 2)+2,((y+1) shl 2)+2),rgb(255,0,0),b
+    d=str(dat(o3))
+    color rgb(255,255,255)
+    locate 1,34
+    print d;
+    locate 3,34
+    print hex(offset);
+    put #mode,,d
+    screensync
+    screencopy 1,0
+    o=(o+1) and &hfff
+    offset=offset+1
+loop
+close #mode
+end
+'for o2=0 to &hfff
+'    addr=bswap12(o2)
+'    ret=ret+str(dat(addr))
+'    'o=o+1
+'    'if o=64 then ret=ret+chr(13)+chr(10)
+'    'if o=128 then
+'        'ret=ret+chr(13)+chr(10)+chr(13)+chr(10)
+'        'o=0
+'    'endif
+'next
+'mode=freefile
+'open filename+".txt" for output as #mode
+'close #mode
+'mode=freefile
+'open filename+".txt" for binary as #mode
+'put #mode,,ret
+'close #mode
+'end
+function bswap(value as byte) as byte
+    return ((value and &h80) shr 7) _
+      or ((value and &h40) shr 5) _
+      or ((value and &h20) shr 3) _
+      or ((value and &h10) shr 1) _
+      or ((value and &h8) shl 1) _
+      or ((value and &h4) shl 3) _
+      or ((value and &h2) shl 5) _
+      or ((value and &h1) shl 7)    
+end function
+function bswap8(value as byte) as byte
+    dim as byte ret=0
+    dim as integer o=0,o2=0
+    for o=0 to 7
+        o2=7-(bswap(o) shr 5)
+        ret=ret or (((value shr o) and 1) shl o2)
+    next
+    return ret
+end function
+function bswap4(value as byte) as byte
+    dim as byte ret=0
+    dim as integer o=0,o2=0
+    for o=0 to 3
+        o2=3-(bswap(o) shr 6)
+        ret=ret or (((value shr o) and 1) shl o2)
+    next
+    return ret
+end function
+function bswap12(value as integer) as integer
+    dim as integer ret=0
+    dim as byte o=0,o2=0
+    for o=0 to 11
+        o2=11-(((bswap(o*15/11) shr 4) and &hf)*11/15)
+        ret=ret or (((value shr o) and 1) shl o2)
+    next
+    return ret
+end function
+sub drawrom(px as integer,py as integer,cols as integer,rows as integer)
+    dim as integer index=0,x=0,y=0,c=0
+    for index=0 to 4093
+        x=index mod cols
+        y=fix(index/cols)
+        c=dat(index)*&hff
+        line(x shl 2,y shl 2)-((x shl 2) or 3,(y shl 2) or 3),rgb(c,c,c),bf
+    next
+end sub
+sub clockstep(first as integer,last as integer,m as integer,c as integer)
+    dim as integer s=0,o=0,c2=c,o2=first
+    if first<last then
+        s=1
+    elseif first>last then
+        s=-1
+    else
+        dat(first)=dat(first) xor c
+        c=0
+        return
+    endif
+    for o2=0 to abs(m)-1
+        c2=c
+        for o=first to last step s*abs(m)
+            c=dat(o+o2)+c
+            dat(o+o2)=c and 1
+            c=(c shr 1) and 1
+        next
+    next
+    return
+end sub
+sub bankswap(first as integer,last as integer,flag as integer)
+    dim as integer s=0,o=0
+    if first<last then
+        s=1
+    elseif first>last then
+        s=-1
+    else
+        s=1
+    endif
+    select case flag
+    case 0
+        for o=first to last step s
+            dat2(o)=dat(bswap12(o))
+        next
+    case 1
+        for o=first to last step s
+            dat(o)=dat2(o)
+        next
+    end select
+    return
+end sub

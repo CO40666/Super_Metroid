@@ -1,0 +1,18 @@
+DSP Pinout
+
+This is how most DSP chips are hooked up. DSP is a uPD77C25 made by NEC.
+
+Vcc   01   28   Vcc
+Vcc   02   27   register select(A14 used when DSP is mapped to cartridge memory region,
+ nc   03   26   /CS             A12 used when DSP is mapped to expansion memory region)
+ nc   04   25   /RD
+ nc   05   24   /WR
+ D0   06   23   nc
+ D1   07   22   nc
+ D2   08   21   Vcc
+ D3   09   20   Vcc
+ D4   10   19   Vcc
+ D5   11   18   Vcc
+ D6   12   17   GND
+ D7   13   16   RESET (inverted /RESET- SNES slot)
+ D8   14   15   CLOCK

@@ -1,0 +1,21 @@
+Japanese 21-pin RGB Connector (EIAJ TTC-003)
+
+This is the Japanese RGB connector used on many video game systems. It is physically identical to the European SCART / Peritel / Euroconnector with a different pinout.
+
+|------------------------------------------|
+|   2   4   6   8  10  12  14  16  18  20  |
+|                                         / 21
+| 1   3   5   7   9  11  13  15  17  19  |
+|-----------------------------------------
+
+ 1: Audio Left Channel Input     2: Audio Left Channel Output
+ 3: Audio Ground                 4: Audio Ground
+ 5: Audio Right Channel Input    6: Audio Right Channel Output
+ 7: Sync / Video Ground          8: Video Ground
+ 9: Sync / CVBS Input           10: CVBS Output
+11: AV Control Input / +5v      12: Ym Input
+13: Red Signal Ground           14: Ground
+15: Red Signal I/O              16: Ys Input / 1V
+17: Green Signal Ground         18: Blue Signal Ground
+19: Green Signal I/O            20: Blue Signal I/O
+21: Plug Shield / Ground

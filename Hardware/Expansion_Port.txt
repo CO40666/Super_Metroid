@@ -1,0 +1,28 @@
+Expansion Port
+
+The expansion port has 28 pads, laid out something like this. This pinout view faces the "cable" (i.e. expansion DEVICE socket). If you are looking at the port on the bottom of the console with the front of the console facing down, pin 1 is bottom-right and pin 28 is top-left.
+
+                 +--------+
+             PA0 |  1   2 | PA1  
+             PA2 |  3   4 | PA3
+             PA4 |  5   6 | PA5
+             PA6 |  7   8 | PA7
+           /PAWR |  9  10 | /PARD
+              D0 | 11  12 | D1 
+              D2 | 13  14 | D3 
+              D4 | 15  16 | D5 
+              D6 | 17  18 | D7 
+          /RESET | 19  20 | Vcc
+          SMPCLK | 21  22 | DOTCK
+             GND | 23  24 | EXPAND
+  Mono Audio Out | 25  26 | /IRQ
+   Left Audio In | 27  28 | Right Audio In
+                 +--------+
+
+    PA0-PA7 are the Address Bus B lines, with /PARD and /PAWR the associated read and write lines.
+    D0-D7 are the data bus lines.
+    /RESET is the reset signal, activated by the big reset button on the console. It can also be activated by hardware on the attached device, if the system needs to be reset at a hardware level.
+    EXPAND is connected to pad 2 of the cart connector.
+    /IRQ is connected to the CPU's /IRQ line. This can be read by the attached device, or activated by the attached device to invoke an IRQ on the CPU.
+    The signals input on Left and Right Audio Inputs are mixed into the APU's output audio. The (mono) audio output is brought back into pin 25.
+    SMPCLK and DOTCK are not really known. SMPCLK comes from the audio subsystem, reports are that it's about 8.192MHz (i.e. 3 APU master clock cycles per cycle). DOTCK comes from PPU2, and seems to be PPU dot clock at about 5.369 MHz (that's 21.477/4).

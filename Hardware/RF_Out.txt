@@ -1,0 +1,3 @@
+RF Out
+
+I know nothing about the output of this port, except that it has a Vcc, a GND, a video signal, and a mono audio signal.

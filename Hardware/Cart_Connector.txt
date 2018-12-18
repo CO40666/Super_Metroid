@@ -1,0 +1,69 @@
+Cart Connector
+
+The cart connector has 62 pads, laid out something like this:
+
+                     +--------+
+     21.477MHz Clock |  1  32 | /WRAM
+              EXPAND |  2  33 | REFRESH
+                 PA6 |  3  34 | PA7
+               /PARD |  4  35 | /PAWR
+                     |--------|
+                 GND |  5  36 | GND
+F                A11 |  6  37 | A12
+r                A10 |  7  38 | A13
+o                 A9 |  8  39 | A14
+n                 A8 |  9  40 | A15
+t                 A7 | 10  41 | A16
+                  A6 | 11  42 | A17
+o                 A5 | 12  43 | A18
+f                 A4 | 13  44 | A19
+                  A3 | 14  45 | A20
+c                 A2 | 15  46 | A21
+a                 A1 | 16  47 | A22
+r                 A0 | 17  48 | A23
+t               /IRQ | 18  49 | /CART
+                  D0 | 19  50 | D4
+                  D1 | 20  51 | D5
+                  D2 | 21  52 | D6
+                  D3 | 22  53 | D7
+                 /RD | 23  54 | /WR
+   CIC out data (p1) | 24  55 | CIC out data (p2)
+    CIC in data (p7) | 25  56 | CIC in clock (p6)
+              /RESET | 26  57 | CPU_CLOCK
+                 Vcc | 27  58 | Vcc
+                     |--------|
+                 PA0 | 28  59 | PA1
+                 PA2 | 29  60 | PA3
+                 PA4 | 30  61 | PA5
+    Left Audio Input | 31  62 | Right Audio Input
+                     +--------+
+
+    A0-A23 are the Address Bus A lines.
+
+    /WR and /RD are the associated read and write lines.
+
+    /WRAM is low when the CPU is accessing WRAM.
+
+    /CART, also called /ROMSEL, is low when the CPU is accessing ROM (banks $40-$7D and $C0-$FF, or $8000-$FFFF of banks $00-$3F and $80-$BF).
+
+    ROMSEL = (addr & 0x408000 == 0) || (addr & 0x7E0000 == 0x7E0000)
+
+    PA0-PA7 are the Address Bus B lines, with /PARD and /PAWR the associated read and write lines.
+
+    D0-D7 are the data bus lines.
+
+    REFRESH is (presumably) the RAM refresh signal sent out each scanline for 40 master cycles.
+
+    EXPAND is connected to pad 24 of the expansion port.
+
+    /IRQ is connected to the CPU's /IRQ line. This can be read by the cart, or activated by the cart to invoke an IRQ on the CPU.
+
+    /RESET is the reset signal, activated by the big reset button on the console. It can also be activated by hardware on the cart, if the system needs to be reset at a hardware level.
+
+    CPU_CLOCK is (presumably) the current CPU cycle clock, which is either 6, 8, or 12 master cycles per cycle (3.58MHz, 2.68MHz, or 1.79MHz).
+
+The signals input on Left and Right Audio Inputs are mixed into the APU's output audio.
+
+The CIC pins are connected to the CIC chip, which is used for region lockouts. If the CIC in the console doesn't get the proper handshake over these pads, the reset signal is never released on the PPU2 chip, and so you never get anything on the display.
+
+Many carts connect only to pins 5-27 and 36-58, as the remaining pins are mainly useful only if the cart contains special chips.

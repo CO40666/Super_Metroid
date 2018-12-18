@@ -1,0 +1,41 @@
+ROM pins
+
+This seems to be consistent with all their mask ROMs (some are 32pin, others 36pin).
+
+               A17   01         32   Vcc
+               A18   02         31   /OE
+               A15   03         30   A19
+               A12   04         29   A14
+                A7   05         28   A13
+                A6   06         27   A8
+                A5   07         26   A9
+                A4   08         25   A11
+                A3   09         24   A16
+                A2   10         23   A10
+                A1   11         22   /CS
+                A0   12         21   D7
+                D0   13         20   D6
+                D1   14         19   D5
+                D2   15         18   D4
+               Vss   16         17   D3
+
+or
+
+               A20   01         36   Vcc
+               A21   02         35   A22
+               A17   03         34   Vcc
+               A18   04         33   /OE
+               A15   05         32   A19
+               A12   06         31   A14
+                A7   07         30   A13
+                A6   08         29   A8
+                A5   09         28   A9
+                A4   10         27   A11
+                A3   11         26   A16
+                A2   12         25   A10
+                A1   13         24   /CS
+                A0   14         23   D7
+                D0   15         22   D6
+                D1   16         21   D5
+                D2   17         20   D4
+               Vss   18         19   D3

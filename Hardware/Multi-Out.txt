@@ -1,0 +1,50 @@
+Multi-Out
+
+The multi-out port has 12 pads, and looks something like this:
+
+  --------^--------
+ /11  9  7  5  3  1\
+|                   |
+ \12 10  8  6  4  2/
+  -----------------
+
+ 1: Red analog out
+ 2: Green analog out
+ 3: Composite H/V sync out ()
+ 4: Blue analog out
+ 5: Ground
+ 6: Ground
+ 7: S-VHS Y (luminance) signal
+ 8: S-VHS C (chroma) signal
+ 9: Composite video signal
+10: Vcc
+11: Mid sound (L+R)
+12: Side sound (L-R)
+
+    1       3       5       7       9      11
+    |       |       |       |       |       |
+    |       |       |   _   |       |       |
+   --------------------/ \--------------------
+ /                                             \
+|                                               |
+|                                               |
+ \                                             /
+   -------------------------------------------
+    |       |       |       |       |       |
+    |       |       |       |       |       |
+    2       4       6       8      10      12
+
+Pin     Description
+===     ===========
+ 1      Red analog video out   (1v DC offset, 1vpp video into 75 ohms)
+ 2      Green analog video out (1v DC offset, 1vpp video into 75 ohms)
+ 3      Composite H/V sync out (1vpp into 75 ohms)
+ 4      Blue analog video out  (1v DC offset, 1vpp video into 75 ohms)
+ 5      Ground
+ 6      Ground
+ 7      Y (luminance) signal for S-VHS (1vpp into 75 ohms)
+ 8      C (chroma)    signal for S-VHS (1vpp into 75 ohms)
+ 9      Composite video signal (1vpp into 75 ohms)
+10      Vcc / +5v (Could be a high logic signal or power for an external RF modulator)
+11      Left channel audio out
+12      Right channel audio out

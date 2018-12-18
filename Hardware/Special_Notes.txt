@@ -1,0 +1,9 @@
+Special Notes:
+
+    Connect pin 16 to pin 11 via 3.3k Ohm resistor. The resistor isn't usually necessary, and +5v on this pin will most often work.
+    Audio Input: 0.40 mVrms, > 47K ohms
+    Audio Output: 0.40 mVrms, > 10K ohms
+    CVBS (Composite Video) in and out: 1 Vp-p, 75 ohms, sync: negative
+    Ym Input: Switches RGB to half-brightness, for video overlay (L: < 0.4V, H: > 1V, 75 ohms)
+    Ys Input: RGB in/out: (Ground for output, 1V+ for Input (preferred)1))
+    All RGB lines: 0.7 Vp-p, 75 ohms

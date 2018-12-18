@@ -1,0 +1,73 @@
+Cartridge edge connectors
+
+           21.477MHz Clock   01   32   /WRAM
+                    EXPAND   02   33   REFRESH
+                       PA6   03   34   PA7
+                     /PARD   04   35   /PAWR
+
+                       GND   05   36   GND
+F                      A11   06   37   A12
+r                      A10   07   38   A13
+o                       A9   08   39   A14
+n                       A8   09   40   A15
+t                       A7   10   41   BA0
+                        A6   11   42   BA1
+o                       A5   12   43   BA2
+f                       A4   13   44   BA3
+                        A3   14   45   BA4
+c                       A2   15   46   BA5
+a                       A1   16   47   BA6
+r                       A0   17   48   BA7
+t                     /IRQ   18   49   /CART
+                        D0   19   50   D4
+                        D1   20   51   D5
+                        D2   21   52   D6
+                        D3   22   53   D7
+                       /RD   23   54   /WR
+         CIC out data (p1)   24   55   CIC out data (p2)
+         CIC  in data (p7)   25   56   CIC in clock (p6)
+                    /RESET   26   57   CPU_CLOCK
+                       Vcc   27   58   Vcc
+
+                       PA0   28   59   PA1
+                       PA2   29   60   PA3
+                       PA4   30   61   PA5
+          Left Audio Input   31   62   Right Audio Input
+
+
+Definitions:
+
+A0-A15  - address bus A (offset)
+BA0-BA7 - address bus A (bank)
+/RD - read control line for address bus A
+/WR - write control line for address bus A
+/CART - set low by console's address decoder when address bus A is accessing memory
+	in the cartridge region
+/WRAM - set low by console's address decoder when address bus A is accessing memory
+	in the WRAM region
+
+/IRQ - a cartridge can pull this low to request an IRQ interrupt on the main CPU
+
+PA0-PA7 - address bus B
+/PARD - read control line for address bus B
+/PAWR - write control line for address bus B
+
+CIC - the security chip
+	(referred to as CIC because that's how it's labeled on cartridge boards)
+
+EXPAND - line is pulled high through a resistor
+	the only other thing this is connected to is a pin of the expansion port
+	(probably meant to allow cartridges to know if something is in the expansion port)
+CPU_CLOCK - I believe this is either the current memory access cycle clock, or it is the
+ 	current clock given to the CPU core. I need to do more verification to be sure.
+	I know that a 21.477MHz signal is given to the main CPU (+peripherals) chip, and
+	depending on the current memory access cycle, the CPU core is actually clocked at
+	3.58, 2.68, or 1.79 Mhz (divided down from the original 21.477MHz).
+	This line connects to the main CPU (+peripherals) chip, which I believe outputs
+	this system frequency, probably to allow a cartridge to stay synchronized with the
+	CPU's memory access cycles if it needs to. 
+REFRESH - This is also some kind of clock I believe.
+	I think it is output from the MainChip and connects to the WRAM.  It's probably
+	some kind of memory refresh signal.
+Audio Inputs - whatever the cartridge puts on these lines will be mixed into the SNES's
+	audio output.

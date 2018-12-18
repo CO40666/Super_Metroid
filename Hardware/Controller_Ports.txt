@@ -1,0 +1,29 @@
+Controller Ports
+
+The controller ports of the SNES has 7 pins, laid out something like this:
+
+ ----------------------------- ---------------------
+|                             |                      \
+| (1)     (2)     (3)     (4) |   (5)     (6)     (7) |
+|                             |                      /
+ ----------------------------- ---------------------
+
+Pin   Description   Wire Color
+===   ===========   ==========
+ 1    +5v (power)   White
+ 2    Clock         Yellow
+ 3    Latch         Orange
+ 4    Data1         Red
+ 5    Data2         ?
+ 6    IOBit         ?
+ 7    Ground        Brown
+
+Latch is written through bit 0 of register $4016. Writing 1 to this bit results in Latch going to whatever state means 'latch' to a joypad.
+
+Clock of Port 1 is connected to the 'read' signal of $4016, in that reading $4016 causes Clock to transition. Data1 and Data2 are then read, and Clock transitions back (at this point, the pad is expected to stick its next bits of data on Data1 and Data2). Clock of Port 2 is connected to $4017.
+
+Data1 and Data2 are read through bits 0 and 1 (respectively) of $4016 and $4017 (for Ports 1 and 2, respectively). Thus, you must read both bits at once, you can't choose to read only Data1 and leave Data2 for later.
+
+IOBit is connected to the I/O Port (which is accessed through registers $4201 and $4213). Port 1's IOBit is connected to bit 6 of the I/O Port, and Port 2's IOBit is connected to bit 7. Note that, since bit 7 of the I/O Port is connected to the PPU Counter Latch, anything plugged into Port 2 may latch the H and V Counters by setting IOBit to 0.
+
+Data1 and Data2 are pulled to logic-0 within the SNES, so reads will return 0 if nothing is plugged in.

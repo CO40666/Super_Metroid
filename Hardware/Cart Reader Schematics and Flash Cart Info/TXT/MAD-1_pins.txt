@@ -1,0 +1,17 @@
+MAD-1 pins
+
+The MAD-1 stands for Memory Address Decoder revision 1. It is used for memory mapping in both HiRom and LoRom. And is used for battery power control on a static RAM.
+
+the MAD-1 chip 
+                                      
+                                /HI  01      16  /LOW
+                           SRAM /CS  02      15  A15 (LoRom), A13 (HiRom) 
+                                 NC  03      14  BA4 (LoRom), A14 (HiRom) 
+                            ROM /OE  04      13  BA5 
+                           SRAM Vcc  05      12  Vcc or BA6 (LoRom), A15 or BA6(HiRom)... 
+                                Vcc  06      11  /CART (pad 49 on cartridge edge) 
+         resistor to +3V of battery  07      10  GND=LoRom, Vcc=HiRom 
+                                GND  08      09  /RESET (pad 26 on cartridge edge) 
+ 
+/HI <--- if two ROM chips, this selects the upper one 
+/LOW <--- if two ROM chips, this selects the lower one 

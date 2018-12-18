@@ -1,0 +1,24 @@
+RGB Monitors
+
+This section covers commonly used monitors and displays used in conjunction with the Super Nintendo or Super Famicom or generally used in retro gaming.
+Casio CMV54NT04P / Sharp LM6Q401
+
+This is the Casio (ÉJÉVÉI) 5.4 inch screen (sometimes written as Casio CMV54NTO4P) used in the Interact Gamecube LCD screens, Iomega XBOX screens and a number of portable console mods. You can see it in action with various consoles and computers here. It can run off a standard NES power supply. Below is a pinout for the back 10-pin connection, it is clearly labeled on the PCB which pins are 1 and 6.
+
+--^-----------^--
+| 1  2  3  4  5 |
+| 6  7  8  9 10 |
+-----------------
+
+ 1: Screen Rotation
+ 2: Blue
+ 3: Red
+ 4: +12v
+ 5: Ground
+ 6: Screen Flip
+ 7: Composite Sync
+ 8: Green
+ 9: +12v
+10: Brightness
+
+In order to use a Japanese SCART with this it requires the use of a LM1881 Chip as seen below.
