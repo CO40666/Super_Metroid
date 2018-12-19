@@ -1,0 +1,31 @@
+; BRR Player patterns file.
+; This file specifies how the player should manipulate the BRR files.
+; In other words, what are the default settings for each BRR file.
+; Simply put this file on the folder where is the BRR files located.
+; Usage: "<file name>.brr" $aa $bb $cc $dd $ee $ff $gg $hh
+; If an asterisk is present before the file name, regex mode is used.
+
+; The format is same as AMK:
+; aa is the first ADSR value (to use ADSR, make sure that it is >= $80. Otherwise GAIN is used.).
+; bb is the second ADSR value.
+; cc is the GAIN value.
+; dd is the tuning multiplier.
+; ee is the tuning submultiplier.
+;
+; ff is the note to play in hex. If $00, dd and ee will be instead direct pitch ($DDEE format).
+; gg is left volume.
+; hh is right volume.
+;
+; All parameters should be in hex.
+
+"Piano.brr" $BF $D1 $C0 $02 $00 $A4 $20 $20
+
+;Regex example:
+;Put the regex pattern inside the file name.
+;Once the file gets played, BRR Player will extract the regex groups
+;from the file name and use as pattern parameter. Use $1 to use group 1, $2 to use group 2, etc.
+*"Piano \$([0-9A-F]{2})\.brr" $BF $D1 $C0 $$1 $00 $00 $20 $20
+; For example this will make XX in all files matched Piano $XX.brr the pitch multiplier value.
+; (Since note is $00, it will actually set pitch high byte)
+; Of course you can make the name dynamic (e.g .*) and simply allow to you put the parameters
+; at the end of the file. It's up to you.
